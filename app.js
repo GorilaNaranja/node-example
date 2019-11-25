@@ -1,4 +1,4 @@
-const fs = require("fs");
+const { createFile } = require("./utils/createFile.js");
 
 const employees = [
   { name: "Gorila", id: 1 },
@@ -25,7 +25,10 @@ let showEmployee = async id => {
   console.log(`Hello ${employee.name}`);
 };
 
-fs.writeFile("temp/employees.txt", JSON.stringify(employees), error => {
-  if (error) throw error;
-  console.log("File saved");
-});
+createFile(employees)
+  .then(res => {
+    console.log("Response: ", res);
+  })
+  .catch(error => {
+    console.log("Error: ", error);
+  });

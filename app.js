@@ -1,4 +1,21 @@
 const { createFile } = require("./utils/createFile.js");
+const argv = require('./config/yargs.js').argv;
+
+let command = argv._[0];
+
+switch (command) {
+  case "show":
+    console.log("Command SHOW");
+    break;
+  case "list":
+    console.log("Command LIST");
+    break;
+  default:
+    console.log("Command DEFAULT");
+    break;
+}
+
+console.log(`My name is ${argv.name} ${argv.surname}`);
 
 const employees = [
   { name: "Gorila", id: 1 },
@@ -11,9 +28,6 @@ const salaries = [
   { price: 2000, id: 2 },
   { price: 1000, id: 3 }
 ];
-
-let argument = process.argv[2];
-console.log(argument);
 
 let getEmployeeById = async id => {
   let employeeDB = employees.find(employee => employee.id === id);

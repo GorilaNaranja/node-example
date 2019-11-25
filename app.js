@@ -10,21 +10,17 @@ const salaries = [
   { price: 1000, id: 3 }
 ];
 
-let getEmployeeById = id => {
-  return new Promise((resolve, reject) => {
-    let employeeDB = employees.find(employee => employee.id === id);
-    if (!employeeDB) {
-      reject(`Employee with id ${id} doesn't exist`);
-    } else {
-      resolve(employeeDB);
-    }
-  });
+let getEmployeeById = async id => {
+  let employeeDB = employees.find(employee => employee.id === id);
+  if (!employeeDB) {
+    throw new Error(`Employe whit id ${id} doesn't exist`);
+  }
+  return employeeDB;
 };
 
-getEmployeeById(3)
-  .then(employee => {
-    console.log("Employee: ", employee);
-  })
-  .catch(error => {
-    console.log("Error: ", error);
-  });
+let showEmployee = async id => {
+  let employee = await getEmployeeById(id);
+  console.log(`Hello ${employee.name}`);
+};
+
+showEmployee(1);

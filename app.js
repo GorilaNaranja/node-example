@@ -12,6 +12,9 @@ const salaries = [
   { price: 1000, id: 3 }
 ];
 
+let argument = process.argv[2];
+console.log(argument);
+
 let getEmployeeById = async id => {
   let employeeDB = employees.find(employee => employee.id === id);
   if (!employeeDB) {

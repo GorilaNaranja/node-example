@@ -1,3 +1,5 @@
+const fs = require("fs");
+
 const employees = [
   { name: "Gorila", id: 1 },
   { name: "Babuin", id: 2 },
@@ -23,4 +25,7 @@ let showEmployee = async id => {
   console.log(`Hello ${employee.name}`);
 };
 
-showEmployee(1);
+fs.writeFile("temp/employees.txt", JSON.stringify(employees), error => {
+  if (error) throw error;
+  console.log("File saved");
+});

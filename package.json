@@ -15,5 +15,11 @@
   "bugs": {
     "url": "https://github.com/GorilaNaranja/node-example/issues"
   },
-  "homepage": "https://github.com/GorilaNaranja/node-example#readme"
+  "homepage": "https://github.com/GorilaNaranja/node-example#readme",
+  "dependencies": {
+    "yargs": "^15.0.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.1"
+  }
 }

@@ -21,11 +21,10 @@ let getEmployeeById = id => {
   });
 };
 
-getEmployeeById(3).then(
-  employee => {
+getEmployeeById(3)
+  .then(employee => {
     console.log("Employee: ", employee);
-  },
-  error => {
+  })
+  .catch(error => {
     console.log("Error: ", error);
-  }
-);
+  });

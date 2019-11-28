@@ -1,8 +1,7 @@
 const axios = require("axios");
 
 const instance = axios.create({
-  baseURL: `https://swapi.co/api`,
-  timeout: 10000
+  baseURL: `https://swapi.co/api`
 });
 
 const getPeople = async () => {
@@ -21,6 +20,14 @@ const getPeopleById = async id => {
   }
 };
 
+const peopleSchema = async id => {
+  try {
+    return (await instance.get(`/people/schema/`)).data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 // const getPlanets = async () => {
 //   let response = null;
 //   try {
@@ -31,17 +38,13 @@ const getPeopleById = async id => {
 //   return response.data.results;
 // };
 
-// const getPlanetsById = async id => {
-//   console.log("Id:", id);
-//   let response = null;
-//   try {
-//     response = await instance.get(`/planets/${id}/`);
-//   } catch (error) {
-//     console.error(error);
-//   }
-
-//   return response.data;
-// };
+const getPlanetsById = async id => {
+  try {
+    return (await instance.get(`/planets/${id}/`)).data;
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 // const getFilm = async () => {
 //   let response = null;
@@ -68,9 +71,10 @@ const getPeopleById = async id => {
 
 module.exports = {
   getPeople,
-  getPeopleById
+  getPeopleById,
+  peopleSchema,
+  getPlanetsById
   // getPlanets,
-  // getPlanetsById,
   // getFilm,
   // getFilmById
 };

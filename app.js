@@ -10,7 +10,7 @@ app.use(bodyParser.urlencoded({ extended: false })); // parse application/x-www-
 app.use(bodyParser.json()); // parse application/json
 app.use(routes);
 
-mongoose.connect("mongodb://localhost:27017/mydatabase", (err, res) => {
+mongoose.connect("mongodb://localhost:27017/mydatabase", err => {
   if (err) throw err;
   console.log("Database connected");
 });

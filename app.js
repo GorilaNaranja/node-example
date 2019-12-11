@@ -6,11 +6,16 @@ const bodyParser = require("body-parser");
 const routes = require("./server/routes/user");
 const app = express();
 
-app.use(bodyParser.urlencoded({ extended: false })); // parse application/x-www-form-urlencoded
-app.use(bodyParser.json()); // parse application/json
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use(routes);
 
-mongoose.connect("mongodb://localhost:27017/mydatabase", err => {
+const password = process.env.MONGO_PASS;
+const dbName = "test";
+const uri = `mongodb+srv://Felipe:${password}@node-example-cluster-vzg5i.mongodb.net/${dbName}?retryWrites=true&w=majority`;
+const options = { useNewUrlParser: true, useUnifiedTopology: true };
+
+mongoose.connect(uri, options, err => {
   if (err) throw err;
   console.log("Database connected");
 });

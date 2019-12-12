@@ -3,7 +3,7 @@ require("./config/config");
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-const routes = require("./server/routes/user");
+const routes = require("./server/routes/index");
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: false }));

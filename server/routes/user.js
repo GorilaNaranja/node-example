@@ -5,9 +5,12 @@ const _ = require("underscore");
 
 const User = require("../models/user");
 
+const { tokenVerification } = require("../middlewares/authentication");
+const { adminVerification } = require("../middlewares/authorization");
+
 const app = express();
 
-app.get("/user", function(req, res) {
+app.get("/user", [tokenVerification, adminVerification], (req, res) => {
   User.find((err, users) => {
     if (err) {
       return res.status(400).json({
@@ -26,7 +29,7 @@ app.get("/user", function(req, res) {
   });
 });
 
-app.post("/user", function(req, res) {
+app.post("/user", [tokenVerification, adminVerification], (req, res) => {
   let body = req.body;
 
   let user = new User({
@@ -51,7 +54,7 @@ app.post("/user", function(req, res) {
   });
 });
 
-app.put("/user/:id", function(req, res) {
+app.put("/user/:id", [tokenVerification, adminVerification], (req, res) => {
   let id = req.params.id;
   let body = _.pick(req.body, ["name", "email", "role"]);
 
@@ -75,7 +78,7 @@ app.put("/user/:id", function(req, res) {
   );
 });
 
-app.delete("/user/:id", function(req, res) {
+app.delete("/user/:id", [tokenVerification, adminVerification], (req, res) => {
   let id = req.params.id;
 
   User.findByIdAndRemove(id, (err, usuarioBorrado) => {

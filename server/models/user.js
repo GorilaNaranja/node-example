@@ -25,7 +25,18 @@ let userSchema = new Schema({
     type: String,
     default: "USER_ROLE",
     enum: roles
-  }
+  },
+  language: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Language"
+    }
+  ]
+  // language: {
+  //   type: Schema.Types.ObjectId,
+  //   ref: "Language",
+  //   default: null
+  // }
 });
 
 userSchema.methods.toJSON = function() {

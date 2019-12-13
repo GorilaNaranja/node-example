@@ -1,34 +1,26 @@
 const express = require("express");
 const { tokenVerification } = require("../middlewares/authentication");
 const { adminVerification } = require("../middlewares/authorization");
-const userController = require("../controllers/user");
+const languageController = require("../controllers/language");
 
 const app = express();
 
-app.get(
-  "/user",
-  [tokenVerification, adminVerification],
-  userController.getUsers
-);
 app.post(
-  "/user",
+  "/language",
   [tokenVerification, adminVerification],
-  userController.createUser
+  languageController.createLanguage
 );
-app.get(
-  "/user/:id",
-  [tokenVerification, adminVerification],
-  userController.getUser
-);
+app.get("/language", tokenVerification, languageController.getLanguages);
+app.get("/language/:id", tokenVerification, languageController.getLanguage);
 app.put(
-  "/user/:id",
+  "/language/:id",
   [tokenVerification, adminVerification],
-  userController.editUser
+  languageController.editLanguage
 );
 app.delete(
-  "/user/:id",
+  "/language/:id",
   [tokenVerification, adminVerification],
-  userController.deleteUser
+  languageController.deleteLanguage
 );
 
 module.exports = app;

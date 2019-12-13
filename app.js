@@ -13,12 +13,24 @@ app.use(routes);
 const password = process.env.MONGO_PASS;
 const dbName = "test";
 const uri = `mongodb+srv://Felipe:${password}@node-example-cluster-vzg5i.mongodb.net/${dbName}?retryWrites=true&w=majority`;
-const options = { useNewUrlParser: true, useUnifiedTopology: true };
+const options = {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useCreateIndex: true
+};
 
-mongoose.connect(uri, options, err => {
-  if (err) throw err;
-  console.log("Database connected");
-});
+const connect = async () => {
+  try {
+    console.log("Trying to connect database...");
+    await mongoose.connect(uri, options);
+    console.log("Database connected");
+  } catch (e) {
+    console.log("Connection error, retrying in 5 sec...");
+    setTimeout(connect, 5000);
+  }
+};
+
+connect();
 
 app.get("/ping", (req, res) => {
   return res.send({

@@ -3,6 +3,7 @@ const User = require("../../models/user");
 const jwt = require("jsonwebtoken");
 const { handleError } = require("../../utils/handleError");
 const _ = require("underscore");
+const userService = require("./user.service");
 
 const login = async (req, res) => {
   let body = req.body;
@@ -25,43 +26,28 @@ const login = async (req, res) => {
 };
 
 const createUser = async (req, res) => {
-  let body = req.body;
-
-  // TODO: mirar estructura del boilerplate, más cómodo todo en una carpeta user = controllers, routes, services, etc
-  // TODO: Todo esto al servicio y ponemos un await al servicio
-  let user = new User({
-    name: body.name,
-    email: body.email,
-    password: bcrypt.hashSync(body.password, 10),
-    role: body.role,
-    language: body.language
-  });
   try {
-    let userDB = await user.save();
-    res.json({ ok: true, user: userDB });
+    let body = req.body;
+    const user = await userService.createUser(body);
+    res.json({ ok: true, user });
   } catch (err) {
     handleError(res, 400, err);
   }
-  ////////////
 };
 
 const getUsers = async (req, res) => {
   try {
-    const users = await User.find({})
-      .populate("language", "name")
-      .exec();
-    const count = await User.countDocuments();
-    res.json({ ok: true, users, count });
+    const usersData = await userService.getUsers();
+    res.json({ ok: true, users: usersData.users, count: usersData.count });
   } catch (error) {
     handleError(res, 400, err);
   }
 };
 
 const getUser = async (req, res) => {
-  let id = req.params.id;
-
   try {
-    const user = await User.findById(id);
+    let id = req.params.id;
+    const user = await userService.getUser(id);
     if (!user) {
       handleError(res, 400, (err = { message: "User not found" }));
     }
@@ -76,10 +62,7 @@ const editUser = async (req, res) => {
   let body = _.pick(req.body, ["name", "email", "role", "language"]);
 
   try {
-    const user = await User.findByIdAndUpdate(id, body, {
-      new: true,
-      runValidators: true
-    });
+    const user = await userService.editUser(id, body);
     res.json({ ok: true, user });
   } catch (error) {
     handleError(res, 400, err);
@@ -90,7 +73,7 @@ const deleteUser = async (req, res) => {
   let id = req.params.id;
 
   try {
-    const user = await User.findByIdAndRemove(id);
+    const user = await userService.deleteUser(id);
     if (!user) {
       handleError(res, 400, (err = { message: "User not found" }));
     }

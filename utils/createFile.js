@@ -1,6 +1,6 @@
 const fs = require("fs");
 
-let createFile = async data => {
+const createFile = async data => {
   return new Promise((resolve, reject) => {
     if (!data) return reject("Empty data");
 

@@ -1,13 +1,13 @@
 const mongoose = require("mongoose");
 
-let Schema = mongoose.Schema;
+const Schema = mongoose.Schema;
 
-let roles = {
+const roles = {
   values: ["USER_ROLE", "ADMIN_ROLE"],
   message: "{VALUE} is not a valid role"
 };
 
-let userSchema = new Schema({
+const userSchema = new Schema({
   name: {
     type: String,
     required: [true, "Name is required"]
@@ -36,8 +36,8 @@ let userSchema = new Schema({
 });
 
 userSchema.methods.toJSON = function() {
-  let user = this;
-  let userObject = user.toObject();
+  const user = this;
+  const userObject = user.toObject();
   delete userObject.password;
   return userObject;
 };

@@ -3,12 +3,12 @@ const _ = require("underscore");
 const frameworkService = require("./framework.service");
 
 const createFramework = async (req, res) => {
-  let body = req.body;
+  const body = req.body;
   try {
     const framework = await frameworkService.createFramework(body);
     res.json({ ok: true, framework });
-  } catch (err) {
-    handleError(res, 400, err);
+  } catch (error) {
+    handleError(res, 400, error);
   }
 };
 
@@ -21,44 +21,44 @@ const getFrameworks = async (req, res) => {
       count: frameworks.count
     });
   } catch (error) {
-    handleError(res, 400, err);
+    handleError(res, 400, error);
   }
 };
 
 const getFramework = async (req, res) => {
   try {
-    let id = req.params.id;
+    const id = req.params.id;
     const framework = await frameworkService.getFramework(id);
     if (!framework) {
-      handleError(res, 400, (err = { message: "Framework not found" }));
+      handleError(res, 400, (error = { message: "Framework not found" }));
     }
     res.json({ ok: true, framework });
   } catch (error) {
-    handleError(res, 400, err);
+    handleError(res, 400, error);
   }
 };
 
 const editFramework = async (req, res) => {
   try {
-    let id = req.params.id;
-    let body = _.pick(req.body, ["name", "description", "language"]);
+    const id = req.params.id;
+    const body = _.pick(req.body, ["name", "description", "language"]);
     const framework = await frameworkService.editFramework(id, body);
     res.json({ ok: true, framework });
   } catch (error) {
-    handleError(res, 400, err);
+    handleError(res, 400, error);
   }
 };
 
 const deleteFramework = async (req, res) => {
   try {
-    let id = req.params.id;
+    const id = req.params.id;
     const framework = await frameworkService.deleteFramework(id);
     if (!framework) {
-      handleError(res, 400, (err = { message: "Framework not found" }));
+      handleError(res, 400, (error = { message: "Framework not found" }));
     }
     res.json({ ok: true, framework });
   } catch (error) {
-    handleError(res, 400, err);
+    handleError(res, 400, error);
   }
 };
 

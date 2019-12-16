@@ -12,7 +12,7 @@ const getLanguage = async id => {
 };
 
 const createLanguage = async languageData => {
-  let language = new Language({
+  const language = new Language({
     name: languageData.name,
     description: languageData.description,
     type: languageData.type

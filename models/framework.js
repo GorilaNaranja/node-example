@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
 
-let Schema = mongoose.Schema;
+const Schema = mongoose.Schema;
 
-let frameworkSchema = new Schema({
+const frameworkSchema = new Schema({
   name: {
     type: String,
     required: [true, "Name is required"]

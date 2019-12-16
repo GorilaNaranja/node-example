@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
 
-let Schema = mongoose.Schema;
+const Schema = mongoose.Schema;
 
-let languagesSchema = new Schema({
+const languagesSchema = new Schema({
   name: {
     type: String,
     unique: true,

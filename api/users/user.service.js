@@ -7,19 +7,20 @@ const login = async user => {
 };
 
 const createUser = async userData => {
-  let user = new User({
+  const user = new User({
     name: userData.name,
     email: userData.email,
     password: bcrypt.hashSync(userData.password, 10),
     role: userData.role,
     language: userData.language
   });
-  let userDB = await user.save();
+  const userDB = await user.save();
   return userDB;
 };
 
 const getUsers = async () => {
-  const users = await User.find({})
+  const users = await User.find()
+    .sort("name")
     .populate("language", "name")
     .exec();
   const count = await User.countDocuments();

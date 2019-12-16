@@ -1,12 +1,12 @@
 const Framework = require("../../models/framework");
 
 const createFramework = async body => {
-  let framework = new Framework({
+  const framework = new Framework({
     name: body.name,
     description: body.description,
     language: body.language
   });
-  let frameworkDB = await framework.save();
+  const frameworkDB = await framework.save();
   return frameworkDB;
 };
 

@@ -29,14 +29,10 @@ let userSchema = new Schema({
   language: [
     {
       type: Schema.Types.ObjectId,
-      ref: "Language"
+      ref: "Language",
+      default: []
     }
   ]
-  // language: {
-  //   type: Schema.Types.ObjectId,
-  //   ref: "Language",
-  //   default: null
-  // }
 });
 
 userSchema.methods.toJSON = function() {

@@ -3,7 +3,7 @@ require("./config/config");
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-const routes = require("./server/routes/index");
+const routes = require("./api/routes");
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -16,7 +16,8 @@ const uri = `mongodb+srv://Felipe:${password}@node-example-cluster-vzg5i.mongodb
 const options = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  useCreateIndex: true
+  useCreateIndex: true,
+  useFindAndModify: false
 };
 
 const connect = async () => {

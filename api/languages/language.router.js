@@ -1,7 +1,7 @@
 const express = require("express");
-const { tokenVerification } = require("../middlewares/authentication");
-const { adminVerification } = require("../middlewares/authorization");
-const languageController = require("../controllers/language");
+const { tokenVerification } = require("../../middlewares/authentication");
+const { adminVerification } = require("../../middlewares/authorization");
+const languageController = require("./language.controller");
 
 const app = express();
 

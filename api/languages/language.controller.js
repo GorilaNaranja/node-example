@@ -1,4 +1,4 @@
-const Language = require("../models/language");
+const Language = require("../../models/language");
 const { handleError } = require("../../utils/handleError");
 
 const getLanguages = (req, res) => {

@@ -1,9 +1,10 @@
 const express = require("express");
-const { tokenVerification } = require("../middlewares/authentication");
-const { adminVerification } = require("../middlewares/authorization");
-const userController = require("../controllers/user");
-
+const { tokenVerification } = require("../../middlewares/authentication");
+const { adminVerification } = require("../../middlewares/authorization");
+const userController = require("./user.controller");
 const app = express();
+
+app.post("/login", userController.login);
 
 app.get(
   "/user",

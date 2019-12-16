@@ -6,20 +6,19 @@ const _ = require("underscore");
 const userService = require("./user.service");
 
 const login = async (req, res) => {
-  let body = req.body;
   try {
-    const userDb = await User.findOne({ email: body.email });
+    let body = req.body;
+    const user = await userService.login(body);
 
-    // TODO: esto va aquí o en el servicio?
-    if (!userDb || !bcrypt.compareSync(body.password, userDb.password)) {
+    if (!user || !bcrypt.compareSync(body.password, user.password)) {
       handleError(res, 400, (err = { message: "User or password wrong" }));
     }
 
-    let token = jwt.sign({ user: userDb }, process.env.TOKEN_SEED, {
+    let token = jwt.sign({ user: user }, process.env.TOKEN_SEED, {
       expiresIn: process.env.TOKEN_TTL
     });
 
-    res.json({ ok: true, user: userDb, token });
+    res.json({ ok: true, user: user, token });
   } catch (error) {
     handleError(res, 500, error);
   }

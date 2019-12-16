@@ -1,90 +1,68 @@
-const Language = require("../../models/language");
 const { handleError } = require("../../utils/handleError");
+const languageService = require("./language.service");
 
-const getLanguages = (req, res) => {
-  Language.find((err, language) => {
-    if (err) return handleError(res, 400, err);
-
-    Language.countDocuments((err, count) => {
-      res.json({
-        ok: true,
-        language,
-        count
-      });
-    });
-  });
-};
-
-const getLanguage = (req, res) => {
-  let id = req.params.id;
-
-  Language.findById(id, (err, languageDB) => {
-    if (err) return handleError(res, 400, err);
-
-    if (!languageDB) {
-      return handleError(res, 400, (err = { message: "Language not found" }));
-    }
-    
+const getLanguages = async (req, res) => {
+  try {
+    const languages = await languageService.getLanguages();
     res.json({
       ok: true,
-      language: languageDB
+      languages: languages.languages,
+      count: languages.count
     });
-  });
+  } catch (err) {
+    handleError(res, 400, err);
+  }
 };
 
-const createLanguage = (req, res) => {
-  let body = req.body;
+const getLanguage = async (req, res) => {
+  try {
+    let id = req.params.id;
+    const language = await languageService.getLanguage(id);
 
-  let language = new Language({
-    name: body.name,
-    description: body.description,
-    type: body.type
-  });
-
-  language.save((err, languageDB) => {
-    if (err) return handleError(res, 400, err);
-
-    res.json({
-      ok: true,
-      language: languageDB
-    });
-  });
-};
-
-const editLanguage = (req, res) => {
-  let id = req.params.id;
-  let body = req.body;
-
-  Language.findByIdAndUpdate(
-    id,
-    body,
-    { new: true, runValidators: true },
-    (err, languageDB) => {
-      if (err) return handleError(res, 400, err);
-
-      res.json({
-        ok: true,
-        language: languageDB
-      });
-    }
-  );
-};
-
-const deleteLanguage = (req, res) => {
-  let id = req.params.id;
-
-  Language.findByIdAndRemove(id, (err, languageRemoved) => {
-    if (err) return handleError(res, 400, err);
-
-    if (!languageRemoved) {
+    if (!language) {
       return handleError(res, 400, (err = { message: "Language not found" }));
     }
 
-    res.json({
-      ok: true,
-      language: languageRemoved
-    });
-  });
+    res.json({ ok: true, language });
+  } catch (err) {
+    handleError(res, 400, err);
+  }
+};
+
+const createLanguage = async (req, res) => {
+  try {
+    let body = req.body;
+    const language = await languageService.createLanguage(body);
+    res.json({ ok: true, language });
+  } catch (err) {
+    handleError(res, 400, err);
+  }
+};
+
+const editLanguage = async (req, res) => {
+  try {
+    let id = req.params.id;
+    let body = req.body;
+    const language = await languageService.editLanguage(id, body);
+    res.json({ ok: true, language });
+  } catch (err) {
+    handleError(res, 400, err);
+  }
+};
+
+const deleteLanguage = async (req, res) => {
+  try {
+    let id = req.params.id;
+    const language = await languageService.deleteLanguage(id);
+
+    if (!language) {
+      return handleError(res, 400, (err = { message: "Language not found" }));
+    }
+
+    res.json({ ok: true, language });
+  } catch (err) {
+    handleError(res, 400, err);
+  }
 };
 
 module.exports = {

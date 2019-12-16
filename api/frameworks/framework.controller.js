@@ -1,17 +1,13 @@
 const Framework = require("../../models/framework");
 const { handleError } = require("../../utils/handleError");
 const _ = require("underscore");
+const frameworkService = require("./framework.service");
 
 const createFramework = async (req, res) => {
   let body = req.body;
-  let framework = new Framework({
-    name: body.name,
-    description: body.description,
-    language: body.language
-  });
   try {
-    let frameworkDB = await framework.save();
-    res.json({ ok: true, framework: frameworkDB });
+    const framework = await frameworkService.createFramework(body);
+    res.json({ ok: true, framework });
   } catch (err) {
     handleError(res, 400, err);
   }
@@ -19,21 +15,21 @@ const createFramework = async (req, res) => {
 
 const getFrameworks = async (req, res) => {
   try {
-    const frameworks = await Framework.find({})
-      .populate("language", "name")
-      .exec();
-    const count = await Framework.countDocuments();
-    res.json({ ok: true, frameworks, count });
+    const frameworks = await frameworkService.getFrameworks();
+    res.json({
+      ok: true,
+      frameworks: frameworks.frameworks,
+      count: frameworks.count
+    });
   } catch (error) {
     handleError(res, 400, err);
   }
 };
 
 const getFramework = async (req, res) => {
-  let id = req.params.id;
-
   try {
-    const framework = await Framework.findById(id);
+    let id = req.params.id;
+    const framework = await frameworkService.getFramework(id);
     if (!framework) {
       handleError(res, 400, (err = { message: "Framework not found" }));
     }
@@ -44,14 +40,10 @@ const getFramework = async (req, res) => {
 };
 
 const editFramework = async (req, res) => {
-  let id = req.params.id;
-  let body = _.pick(req.body, ["name", "description", "language"]);
-
   try {
-    const framework = await Framework.findByIdAndUpdate(id, body, {
-      new: true,
-      runValidators: true
-    });
+    let id = req.params.id;
+    let body = _.pick(req.body, ["name", "description", "language"]);
+    const framework = await frameworkService.editFramework(id, body);
     res.json({ ok: true, framework });
   } catch (error) {
     handleError(res, 400, err);
@@ -59,10 +51,9 @@ const editFramework = async (req, res) => {
 };
 
 const deleteFramework = async (req, res) => {
-  let id = req.params.id;
-
   try {
-    const framework = await Framework.findByIdAndRemove(id);
+    let id = req.params.id;
+    const framework = await frameworkService.deleteFramework(id);
     if (!framework) {
       handleError(res, 400, (err = { message: "Framework not found" }));
     }

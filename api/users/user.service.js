@@ -1,6 +1,11 @@
 const bcrypt = require("bcrypt");
 const User = require("../../models/user");
 
+const login = async user => {
+  const userDB = await User.findOne({ email: user.email });
+  return userDB;
+};
+
 const createUser = async userData => {
   let user = new User({
     name: userData.name,
@@ -39,4 +44,4 @@ const deleteUser = async id => {
   return user;
 };
 
-module.exports = { createUser, getUsers, getUser, editUser, deleteUser };
+module.exports = { login, createUser, getUsers, getUser, editUser, deleteUser };

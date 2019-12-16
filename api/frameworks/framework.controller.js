@@ -1,4 +1,3 @@
-const Framework = require("../../models/framework");
 const { handleError } = require("../../utils/handleError");
 const _ = require("underscore");
 const frameworkService = require("./framework.service");

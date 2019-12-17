@@ -1,6 +1,5 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { handleError } = require("../../utils/handleError");
 const boom = require("@hapi/boom");
 const _ = require("underscore");
 const userService = require("./user.service");

@@ -1,4 +1,4 @@
-const { handleError } = require("../../utils/handleError");
+const boom = require("@hapi/boom");
 const _ = require("underscore");
 const frameworkService = require("./framework.service");
 
@@ -8,7 +8,7 @@ const createFramework = async (req, res) => {
     const framework = await frameworkService.createFramework(body);
     res.json({ ok: true, framework });
   } catch (error) {
-    handleError(res, 400, error);
+    return next(boom.badData(error.message));
   }
 };
 
@@ -21,7 +21,7 @@ const getFrameworks = async (req, res) => {
       count: frameworks.count
     });
   } catch (error) {
-    handleError(res, 400, error);
+    return next(boom.badData(error.message));
   }
 };
 
@@ -30,11 +30,11 @@ const getFramework = async (req, res) => {
     const id = req.params.id;
     const framework = await frameworkService.getFramework(id);
     if (!framework) {
-      handleError(res, 400, (error = { message: "Framework not found" }));
+      return next(boom.badData("Framework not found"));
     }
     res.json({ ok: true, framework });
   } catch (error) {
-    handleError(res, 400, error);
+    return next(boom.badData(error.message));
   }
 };
 
@@ -45,7 +45,7 @@ const editFramework = async (req, res) => {
     const framework = await frameworkService.editFramework(id, body);
     res.json({ ok: true, framework });
   } catch (error) {
-    handleError(res, 400, error);
+    return next(boom.badData(error.message));
   }
 };
 
@@ -54,11 +54,11 @@ const deleteFramework = async (req, res) => {
     const id = req.params.id;
     const framework = await frameworkService.deleteFramework(id);
     if (!framework) {
-      handleError(res, 400, (error = { message: "Framework not found" }));
+      return next(boom.badData("Framework not found"));
     }
     res.json({ ok: true, framework });
   } catch (error) {
-    handleError(res, 400, error);
+    return next(boom.badData(error.message));
   }
 };
 

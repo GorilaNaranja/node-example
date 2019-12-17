@@ -1,4 +1,4 @@
-const { handleError } = require("../../utils/handleError");
+const boom = require("@hapi/boom");
 const languageService = require("./language.service");
 
 const getLanguages = async (req, res) => {
@@ -10,7 +10,7 @@ const getLanguages = async (req, res) => {
       count: languages.count
     });
   } catch (error) {
-    handleError(res, 400, error);
+    return next(boom.badData(error.message));
   }
 };
 
@@ -20,12 +20,12 @@ const getLanguage = async (req, res) => {
     const language = await languageService.getLanguage(id);
 
     if (!language) {
-      return handleError(res, 400, (error = { message: "Language not found" }));
+      return next(boom.badData("Language not found"));
     }
 
     res.json({ ok: true, language });
   } catch (error) {
-    handleError(res, 400, error);
+    return next(boom.badData(error.message));
   }
 };
 
@@ -35,7 +35,7 @@ const createLanguage = async (req, res) => {
     const language = await languageService.createLanguage(body);
     res.json({ ok: true, language });
   } catch (error) {
-    handleError(res, 400, error);
+    return next(boom.badData(error.message));
   }
 };
 
@@ -46,7 +46,7 @@ const editLanguage = async (req, res) => {
     const language = await languageService.editLanguage(id, body);
     res.json({ ok: true, language });
   } catch (error) {
-    handleError(res, 400, error);
+    return next(boom.badData(error.message));
   }
 };
 
@@ -56,12 +56,12 @@ const deleteLanguage = async (req, res) => {
     const language = await languageService.deleteLanguage(id);
 
     if (!language) {
-      return handleError(res, 400, (error = { message: "Language not found" }));
+      return next(boom.badData("Language not found"));
     }
 
     res.json({ ok: true, language });
   } catch (error) {
-    handleError(res, 400, error);
+    return next(boom.badData(error.message));
   }
 };
 

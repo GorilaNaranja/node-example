@@ -1,17 +1,18 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { handleError } = require("../../utils/handleError");
+const boom = require("@hapi/boom");
 const _ = require("underscore");
 const userService = require("./user.service");
 const nodemailer = require("nodemailer");
 
-const login = async (req, res) => {
+const login = async (req, res, next) => {
   try {
     const body = req.body;
     const user = await userService.login(body);
 
     if (!user || !bcrypt.compareSync(body.password, user.password)) {
-      handleError(res, 400, (error = { message: "User or password wrong" }));
+      return next(boom.unauthorized("User or password wrong"));
     }
 
     const token = jwt.sign({ user: user }, process.env.TOKEN_SEED, {
@@ -20,17 +21,20 @@ const login = async (req, res) => {
 
     res.json({ ok: true, user: user, token });
   } catch (error) {
-    handleError(res, 500, error);
+    return next(boom.badData(error.message));
   }
 };
 
-const createUser = async (req, res) => {
+const createUser = async (req, res, next) => {
   try {
     const body = req.body;
     const user = await userService.createUser(body);
     res.json({ ok: true, user });
   } catch (error) {
-    handleError(res, 400, error);
+    if (error.name === "MongoError" && error.code === 11000) {
+      return next(boom.badData("Email already exists"));
+    }
+    return next(boom.badData(error.message));
   }
 };
 
@@ -39,7 +43,7 @@ const getUsers = async (req, res) => {
     const usersData = await userService.getUsers();
     res.json({ ok: true, users: usersData.users, count: usersData.count });
   } catch (error) {
-    handleError(res, 400, error);
+    return next(boom.badData(error.message));
   }
 };
 
@@ -48,11 +52,11 @@ const getUser = async (req, res) => {
     const id = req.params.id;
     const user = await userService.getUser(id);
     if (!user) {
-      handleError(res, 400, (error = { message: "User not found" }));
+      return next(boom.badData("User not found"));
     }
     res.json({ ok: true, user });
   } catch (error) {
-    handleError(res, 400, error);
+    return next(boom.badData(error.message));
   }
 };
 
@@ -64,7 +68,7 @@ const editUser = async (req, res) => {
     const user = await userService.editUser(id, body);
     res.json({ ok: true, user });
   } catch (error) {
-    handleError(res, 400, error);
+    return next(boom.badData(error.message));
   }
 };
 
@@ -74,11 +78,11 @@ const deleteUser = async (req, res) => {
   try {
     const user = await userService.deleteUser(id);
     if (!user) {
-      handleError(res, 400, (error = { message: "User not found" }));
+      return next(boom.badData("User not found"));
     }
     res.json({ ok: true, user });
   } catch (error) {
-    handleError(res, 400, error);
+    return next(boom.badData(error.message));
   }
 };
 
@@ -103,7 +107,7 @@ const sendEmailToUser = async (req, res) => {
 
     res.json({ ok: true, preview: nodemailer.getTestMessageUrl(info) });
   } catch (error) {
-    res.json({ ok: false, error });
+    return next(boom.badData(error.message));
   }
 };
 

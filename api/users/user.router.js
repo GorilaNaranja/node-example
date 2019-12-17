@@ -1,6 +1,7 @@
 const express = require("express");
 const { tokenVerification } = require("../../middlewares/authentication");
 const { adminVerification } = require("../../middlewares/authorization");
+const validator = require("./user.validator");
 const userController = require("./user.controller");
 const app = express();
 
@@ -13,6 +14,7 @@ app.get(
 );
 app.post(
   "/user",
+  validator.createUser,
   [tokenVerification, adminVerification],
   userController.createUser
 );

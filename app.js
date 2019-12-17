@@ -3,6 +3,7 @@ require("./config/config");
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
+const boom = require("@hapi/boom");
 const routes = require("./api/routes");
 const app = express();
 
@@ -43,4 +44,18 @@ app.get("/ping", (req, res) => {
 
 app.listen(process.env.PORT, () => {
   console.log(`Node listening on port ${process.env.PORT}`);
+});
+
+app.use((err, req, res, next) => {
+  if (!err.isBoom) {
+    if (err.message === "validation error") {
+      return res.status(err.status).json({
+        statusCode: err.status,
+        error: "Unprocessable Entity",
+        message: err.statusText
+      });
+    }
+    err = boom.badImplementation();
+  }
+  return res.status(err.output.statusCode).json(err.output.payload);
 });

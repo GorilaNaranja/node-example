@@ -31,5 +31,10 @@ app.delete(
   [tokenVerification, adminVerification],
   userController.deleteUser
 );
+app.post(
+  "/user/send",
+  [tokenVerification, adminVerification],
+  userController.sendEmailToUser
+);
 
 module.exports = app;

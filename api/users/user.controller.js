@@ -1,9 +1,9 @@
 const bcrypt = require("bcrypt");
-const User = require("../../models/user");
 const jwt = require("jsonwebtoken");
 const { handleError } = require("../../utils/handleError");
 const _ = require("underscore");
 const userService = require("./user.service");
+const nodemailer = require("nodemailer");
 
 const login = async (req, res) => {
   try {
@@ -82,11 +82,37 @@ const deleteUser = async (req, res) => {
   }
 };
 
+const sendEmailToUser = async (req, res) => {
+  const testAccount = await nodemailer.createTestAccount();
+
+  const transporter = nodemailer.createTransport({
+    host: "smtp.ethereal.email",
+    port: 587,
+    secure: false,
+    auth: { user: testAccount.user, pass: testAccount.pass }
+  });
+
+  try {
+    const info = await transporter.sendMail({
+      from: `"${req.user.name}" <${req.user.email}>`,
+      to: req.body.email,
+      subject: "Hello ✔",
+      text: "Hello world?",
+      html: "<b>Hello world?</b>"
+    });
+
+    res.json({ ok: true, preview: nodemailer.getTestMessageUrl(info) });
+  } catch (error) {
+    res.json({ ok: false, error });
+  }
+};
+
 module.exports = {
   login,
   createUser,
   getUsers,
   getUser,
   editUser,
-  deleteUser
+  deleteUser,
+  sendEmailToUser
 };

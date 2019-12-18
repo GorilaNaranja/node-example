@@ -1,24 +1,34 @@
 const Joi = require("@hapi/joi");
 const boom = require("@hapi/boom");
 
-const schema = Joi.object({
-  name: Joi.string()
-    .min(3)
-    .max(30)
-    .required(),
-  description: Joi.string()
-    .min(3)
-    .max(50)
-    .required(),
-  type: Joi.string()
-    .min(3)
-    .max(30)
-    .required()
+const name = Joi.string().max(30);
+const description = Joi.string().max(50);
+const type = Joi.string().max(30);
+
+const createSchema = Joi.object({
+  name: name.required(),
+  description: description.required(),
+  type: type.required()
+});
+
+const editSchema = Joi.object({
+  name,
+  description,
+  type
 });
 
 const createLanguage = async (req, res, next) => {
   try {
-    await schema.validateAsync(req.body);
+    await createSchema.validateAsync(req.body);
+    next();
+  } catch (error) {
+    return next(boom.badData(error.message));
+  }
+};
+
+const editLanguage = async (req, res, next) => {
+  try {
+    await editSchema.validateAsync(req.body);
     next();
   } catch (error) {
     return next(boom.badData(error.message));
@@ -26,5 +36,6 @@ const createLanguage = async (req, res, next) => {
 };
 
 module.exports = {
-  createLanguage
+  createLanguage,
+  editLanguage
 };

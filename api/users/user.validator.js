@@ -4,21 +4,26 @@ const boom = require("@hapi/boom");
 const name = Joi.string()
   .alphanum()
   .min(3)
-  .max(30)
-  .required();
-
+  .max(30);
 const password = Joi.string().pattern(new RegExp("^[a-zA-Z0-9]{3,30}$"));
+const email = Joi.string().email();
+const role = Joi.string().valid("USER_ROLE", "ADMIN_ROLE");
+const language = Joi.array();
 
-const email = Joi.string()
-  .email()
-  .required();
+const createSchema = Joi.object({
+  name: name.required(),
+  password: password.required(),
+  email: email.required(),
+  role: role.required(),
+  language
+});
 
-const role = Joi.string()
-  .valid("USER_ROLE", "ADMIN_ROLE")
-  .required();
+const loginSchema = Joi.object({
+  password: password.required(),
+  email: email.required()
+});
 
-const createSchema = Joi.object({ name, password, email, role });
-const loginSchema = Joi.object({ password, email });
+const editSchema = Joi.object({ name, email, language });
 
 const loginUser = async (req, res, next) => {
   try {
@@ -38,7 +43,17 @@ const createUser = async (req, res, next) => {
   }
 };
 
+const editUser = async (req, res, next) => {
+  try {
+    await editSchema.validateAsync(req.body);
+    next();
+  } catch (error) {
+    return next(boom.badData(error.message));
+  }
+};
+
 module.exports = {
   loginUser,
-  createUser
+  createUser,
+  editUser
 };

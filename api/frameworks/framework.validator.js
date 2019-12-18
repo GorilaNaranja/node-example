@@ -1,20 +1,34 @@
 const Joi = require("@hapi/joi");
 const boom = require("@hapi/boom");
 
-const schema = Joi.object({
-  name: Joi.string()
-    .min(3)
-    .max(30)
-    .required(),
-  description: Joi.string()
-    .min(3)
-    .max(50)
-    .required()
+const name = Joi.string().max(30);
+const description = Joi.string().max(50);
+const language = Joi.array();
+
+const createSchema = Joi.object({
+  name: name.required(),
+  description: description.required(),
+  language
+});
+
+const editSchema = Joi.object({
+  name,
+  description,
+  language
 });
 
 const createFramework = async (req, res, next) => {
   try {
-    await schema.validateAsync(req.body);
+    await createSchema.validateAsync(req.body);
+    next();
+  } catch (error) {
+    return next(boom.badData(error.message));
+  }
+};
+
+const editFramework = async (req, res, next) => {
+  try {
+    await editSchema.validateAsync(req.body);
     next();
   } catch (error) {
     return next(boom.badData(error.message));
@@ -22,5 +36,6 @@ const createFramework = async (req, res, next) => {
 };
 
 module.exports = {
-  createFramework
+  createFramework,
+  editFramework
 };

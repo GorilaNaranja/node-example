@@ -65,6 +65,9 @@ const editUser = async (req, res) => {
 
   try {
     const user = await userService.editUser(id, body);
+    if (!user) {
+      return next(boom.badData("User not found"));
+    }
     res.json({ ok: true, user });
   } catch (error) {
     return next(boom.badData(error.message));

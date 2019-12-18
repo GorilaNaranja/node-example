@@ -16,6 +16,7 @@ app.get("/language", tokenVerification, languageController.getLanguages);
 app.get("/language/:id", tokenVerification, languageController.getLanguage);
 app.put(
   "/language/:id",
+  validator.editLanguage,
   [tokenVerification, adminVerification],
   languageController.editLanguage
 );

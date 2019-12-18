@@ -25,6 +25,7 @@ app.get(
 );
 app.put(
   "/user/:id",
+  validator.editUser,
   [tokenVerification, adminVerification],
   userController.editUser
 );

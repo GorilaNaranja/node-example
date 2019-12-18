@@ -15,6 +15,7 @@ app.post(
 app.get("/framework/:id", tokenVerification, frameworkController.getFramework);
 app.put(
   "/framework/:id",
+  validator.editFramework,
   [tokenVerification, adminVerification],
   frameworkController.editFramework
 );

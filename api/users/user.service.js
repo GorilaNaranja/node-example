@@ -19,7 +19,7 @@ const createUser = async userData => {
 };
 
 const getUsers = async (filters, options) => {
-  options.populate = { path: 'language', select: 'name' };
+  options.populate = { path: "language", select: "name" };
   return User.paginate(filters, options);
 };
 
@@ -43,4 +43,11 @@ const deleteUser = async id => {
   return user;
 };
 
-module.exports = { login, createUser, getUsers, getUser, editUser, deleteUser };
+module.exports = {
+  login,
+  createUser,
+  getUsers,
+  getUser,
+  editUser,
+  deleteUser
+};

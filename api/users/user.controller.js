@@ -50,7 +50,7 @@ const getUsers = async (req, res, next) => {
   }
 };
 
-const getUser = async (req, res) => {
+const getUser = async (req, res, next) => {
   try {
     const id = req.params.id;
     const user = await userService.getUser(id);

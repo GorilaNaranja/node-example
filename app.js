@@ -3,7 +3,6 @@ require("dotenv").config({ path: "./.env" });
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-const boom = require("@hapi/boom");
 const routes = require("./api/routes");
 const app = express();
 const { handleErrors } = require("./middlewares/handleErrors");

@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 const boom = require("@hapi/boom");
 const routes = require("./api/routes");
 const app = express();
+const { handleErrors } = require("./middlewares/handleErrors");
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -47,15 +48,5 @@ app.listen(process.env.PORT, () => {
 });
 
 app.use((err, req, res, next) => {
-  if (!err.isBoom) {
-    if (err.message === "validation error") {
-      return res.status(err.status).json({
-        statusCode: err.status,
-        error: "Unprocessable Entity",
-        message: err.statusText
-      });
-    }
-    err = boom.badImplementation();
-  }
-  return res.status(err.output.statusCode).json(err.output.payload);
+  handleErrors(err, req, res, next);
 });

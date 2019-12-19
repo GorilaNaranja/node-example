@@ -1,8 +1,8 @@
 const Joi = require("@hapi/joi");
 const boom = require("@hapi/boom");
 
-const name = Joi.string().max(30);
-const description = Joi.string().max(50);
+const name = Joi.string().max(50);
+const description = Joi.string().max(200);
 const language = Joi.array();
 
 const createSchema = Joi.object({

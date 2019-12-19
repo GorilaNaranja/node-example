@@ -4,7 +4,7 @@ const boom = require("@hapi/boom");
 const name = Joi.string()
   .alphanum()
   .min(3)
-  .max(30);
+  .max(50);
 const password = Joi.string().pattern(new RegExp("^[a-zA-Z0-9]{3,30}$"));
 const email = Joi.string().email();
 const role = Joi.string().valid("USER_ROLE", "ADMIN_ROLE");

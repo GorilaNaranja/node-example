@@ -18,17 +18,15 @@ const createUser = async userData => {
   return userDB;
 };
 
-const getUsers = async () => {
-  const users = await User.find()
-    .sort("name")
-    .populate("language", "name")
-    .exec();
-  const count = await User.countDocuments();
-  return { users, count };
+const getUsers = async (filters, options) => {
+  options.populate = { path: 'language', select: 'name' };
+  return User.paginate(filters, options);
 };
 
 const getUser = async id => {
-  const user = await User.findById(id);
+  const user = await User.findById(id)
+    .populate("language", "name")
+    .exec();
   return user;
 };
 

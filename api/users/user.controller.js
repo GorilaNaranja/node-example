@@ -4,6 +4,8 @@ const boom = require("@hapi/boom");
 const _ = require("underscore");
 const userService = require("./user.service");
 const nodemailer = require("nodemailer");
+const queryOptions = require("../../utils/queryOptions");
+const userFilters = require("./user.filters");
 
 const login = async (req, res, next) => {
   try {
@@ -37,10 +39,12 @@ const createUser = async (req, res, next) => {
   }
 };
 
-const getUsers = async (req, res) => {
+const getUsers = async (req, res, next) => {
   try {
-    const usersData = await userService.getUsers();
-    res.json({ ok: true, users: usersData.users, count: usersData.count });
+    const filters = userFilters(req.query);
+    const options = queryOptions(req.query);
+    const users = await userService.getUsers(filters, options);
+    res.json({ ok: true, users });
   } catch (error) {
     return next(boom.badData(error.message));
   }
@@ -59,7 +63,7 @@ const getUser = async (req, res) => {
   }
 };
 
-const editUser = async (req, res) => {
+const editUser = async (req, res, next) => {
   const id = req.params.id;
   const body = _.pick(req.body, ["name", "email", "role", "language"]);
 
@@ -74,7 +78,7 @@ const editUser = async (req, res) => {
   }
 };
 
-const deleteUser = async (req, res) => {
+const deleteUser = async (req, res, next) => {
   const id = req.params.id;
 
   try {
@@ -88,7 +92,7 @@ const deleteUser = async (req, res) => {
   }
 };
 
-const sendEmailToUser = async (req, res) => {
+const sendEmailToUser = async (req, res, next) => {
   const testAccount = await nodemailer.createTestAccount();
 
   const transporter = nodemailer.createTransport({

@@ -26,4 +26,10 @@ app.delete(
   languageController.deleteLanguage
 );
 
+app.get(
+  "/languages/pdf",
+  [tokenVerification, adminVerification],
+  languageController.downloadPdfLanguages
+);
+
 module.exports = app;

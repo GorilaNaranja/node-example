@@ -1,5 +1,6 @@
 const boom = require("@hapi/boom");
 const languageService = require("./language.service");
+const fs = require("fs");
 
 const getLanguages = async (req, res, next) => {
   try {
@@ -69,10 +70,22 @@ const deleteLanguage = async (req, res, next) => {
   }
 };
 
+const downloadPdfLanguages = async (req, res, next) => {
+  try {
+    const filePath = await languageService.generatePdfLanguages();
+    var data = fs.readFileSync(filePath);
+    res.contentType("application/pdf");
+    res.send(data);
+  } catch (error) {
+    return next(boom.badData(error.message));
+  }
+};
+
 module.exports = {
   getLanguages,
   getLanguage,
   createLanguage,
   editLanguage,
-  deleteLanguage
+  deleteLanguage,
+  downloadPdfLanguages
 };

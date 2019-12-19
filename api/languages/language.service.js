@@ -1,4 +1,7 @@
 const Language = require("../../models/language");
+const pdf = require("html-pdf");
+const fs = require("fs");
+const ejs = require("ejs");
 
 const getLanguages = async () => {
   const languages = await Language.find();
@@ -34,10 +37,26 @@ const deleteLanguage = async id => {
   return language;
 };
 
+const generatePdfLanguages = async () => {
+  const languages = await Language.find();
+  let templateString = fs.readFileSync("./views/languages.ejs", "utf-8");
+  let html = ejs.render(templateString, { languages });
+
+  return new Promise((resolve, reject) => {
+    pdf.create(html).toFile("./temp/languages.pdf", function(err, res) {
+      if (err) reject(err);
+      resolve(res.filename);
+    });
+  });
+};
+
+const createFile = async data => {};
+
 module.exports = {
   getLanguages,
   getLanguage,
   createLanguage,
   editLanguage,
-  deleteLanguage
+  deleteLanguage,
+  generatePdfLanguages
 };

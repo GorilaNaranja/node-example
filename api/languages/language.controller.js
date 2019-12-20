@@ -1,15 +1,15 @@
 const boom = require("@hapi/boom");
 const languageService = require("./language.service");
 const fs = require("fs");
+const queryOptions = require("../../utils/queryOptions");
+const languageFilters = require("./language.filters");
 
 const getLanguages = async (req, res, next) => {
   try {
-    const languages = await languageService.getLanguages();
-    res.json({
-      ok: true,
-      languages: languages.languages,
-      count: languages.count
-    });
+    const filters = languageFilters(req.query);
+    const options = queryOptions(req.query);
+    const languages = await languageService.getLanguages(filters, options);
+    res.json({ ok: true, languages });
   } catch (error) {
     return next(boom.badData(error.message));
   }

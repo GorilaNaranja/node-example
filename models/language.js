@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const mongoosePaginate = require("mongoose-paginate-v2");
 
 const Schema = mongoose.Schema;
 
@@ -17,5 +18,7 @@ const languagesSchema = new Schema({
     required: [true, "Type is required"]
   }
 });
+
+languagesSchema.plugin(mongoosePaginate);
 
 module.exports = mongoose.model("Language", languagesSchema);

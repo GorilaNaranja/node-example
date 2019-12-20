@@ -3,10 +3,8 @@ const pdf = require("html-pdf");
 const fs = require("fs");
 const ejs = require("ejs");
 
-const getLanguages = async () => {
-  const languages = await Language.find();
-  const count = await Language.countDocuments();
-  return { languages, count };
+const getLanguages = async (filters, options) => {
+  return Language.paginate(filters, options);
 };
 
 const getLanguage = async id => {

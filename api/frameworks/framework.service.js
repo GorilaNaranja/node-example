@@ -10,12 +10,9 @@ const createFramework = async body => {
   return frameworkDB;
 };
 
-const getFrameworks = async () => {
-  const frameworks = await Framework.find({})
-    .populate("language", "name")
-    .exec();
-  const count = await Framework.countDocuments();
-  return { frameworks, count };
+const getFrameworks = async (filters, options) => {
+  options.populate = { path: "language", select: "name" };
+  return Framework.paginate(filters, options);
 };
 
 const getFramework = async id => {

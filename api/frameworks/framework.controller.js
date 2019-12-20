@@ -1,6 +1,8 @@
 const boom = require("@hapi/boom");
 const _ = require("underscore");
 const frameworkService = require("./framework.service");
+const queryOptions = require("../../utils/queryOptions");
+const frameworkFilters = require("./framework.filters");
 
 const createFramework = async (req, res, next) => {
   try {
@@ -17,12 +19,10 @@ const createFramework = async (req, res, next) => {
 
 const getFrameworks = async (req, res, next) => {
   try {
-    const frameworks = await frameworkService.getFrameworks();
-    res.json({
-      ok: true,
-      frameworks: frameworks.frameworks,
-      count: frameworks.count
-    });
+    const filters = frameworkFilters(req.query);
+    const options = queryOptions(req.query);
+    const frameworks = await frameworkService.getFrameworks(filters, options);
+    res.json({ ok: true, frameworks });
   } catch (error) {
     return next(boom.badData(error.message));
   }

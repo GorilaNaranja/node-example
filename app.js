@@ -6,10 +6,12 @@ const bodyParser = require("body-parser");
 const routes = require("./api/routes");
 const app = express();
 const { handleErrors } = require("./middlewares/handleErrors");
+const helmet = require("helmet");
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(routes);
+app.use(helmet());
 
 const password = process.env.MONGO_PASS;
 const dbName = "test";

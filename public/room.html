@@ -68,6 +68,7 @@
     <script>
       $(function() {
         const url = `https://localhost:8000`;
+        const socket = io(url);
 
         const room = window.location.pathname.split("/room/")[1];
         const user = { name: "Felipe", id: "123" };

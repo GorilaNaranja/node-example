@@ -67,13 +67,9 @@
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
     <script>
       $(function() {
-        const url = `http://localhost:8000`;
+        console.log(window.location.hostname + ":8000");
 
-        console.log(url);
-        console.log(window.location);
-
-        const socket = io(':8000');
-
+        const socket = io(window.location.hostname + ":8000");
         const room = window.location.pathname.split("/room/")[1];
         const user = { name: "Felipe", id: "123" };
         const element = '<div class="shadow p-3 mb-2 bg-white rounded">';

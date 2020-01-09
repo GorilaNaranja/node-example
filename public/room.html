@@ -67,7 +67,8 @@
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
     <script>
       $(function() {
-        const url = `https://localhost:8000`;
+        const url = `https://felipe-node-example.herokuapp.com:8000`;
+
         const socket = io(url);
 
         const room = window.location.pathname.split("/room/")[1];

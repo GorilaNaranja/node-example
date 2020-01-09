@@ -80,7 +80,7 @@
         $("form").submit(function(e) {
           e.preventDefault();
           const msg = $("#m").val();
-          socket.emit("createMsg", msg, room);
+          if (msg) socket.emit("createMsg", msg, room);
           $("#m").val("");
           return false;
         });

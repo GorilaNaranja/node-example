@@ -67,7 +67,10 @@
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
     <script>
       $(function() {
-        const url = `https://felipe-node-example.herokuapp.com:8000`;
+        const url = `http://localhost:8000`;
+
+        console.log(url);
+        console.log(window.location);
 
         const socket = io(url);
 

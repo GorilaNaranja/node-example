@@ -1,17 +1,21 @@
 require("dotenv").config({ path: "./.env" });
 
-const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const routes = require("./api/routes");
-const app = express();
 const { handleErrors } = require("./middlewares/handleErrors");
 const helmet = require("helmet");
+
+const express = require("express");
+const app = express();
+const http = require("http").Server(app);
+const io = require("socket.io")(http);
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(routes);
 app.use(helmet());
+app.set("view engine", "ejs");
 
 const password = process.env.MONGO_PASS;
 const dbName = "test";
@@ -46,6 +50,14 @@ app.get("/ping", (req, res) => {
 
 app.listen(process.env.PORT, () => {
   console.log(`Node listening on port ${process.env.PORT}`);
+});
+
+// SOCKETS.IO
+module.exports = { io };
+require("./sockets/socket");
+
+http.listen(8000, function() {
+  console.log(`Socket listening on port ${8000}`);
 });
 
 app.use((err, req, res, next) => {

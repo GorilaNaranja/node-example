@@ -48,15 +48,15 @@ app.get("/ping", (req, res) => {
   });
 });
 
-// app.listen(process.env.PORT, () => {
-//   console.log(`Node listening on port ${process.env.PORT}`);
-// });
+app.listen(process.env.PORT, () => {
+  console.log(`Node listening on port ${process.env.PORT}`);
+});
 
 // SOCKETS.IO
 module.exports = { io };
 require("./sockets/socket");
 
-http.listen(3000, function() {
+http.listen(8000, function() {
   console.log(`Socket listening on port ${8000}`);
 });
 

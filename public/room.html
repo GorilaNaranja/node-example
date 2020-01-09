@@ -67,12 +67,7 @@
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
     <script>
       $(function() {
-        const url = `https://${window.location.hostname}:8000`;
-        console.log("url: ", url);
-        console.log("url: ", window.location.hostname);
-        console.log("url: ", window.location);
-
-        const socket = io(url);
+        const url = `https://localhost:8000`;
 
         const room = window.location.pathname.split("/room/")[1];
         const user = { name: "Felipe", id: "123" };

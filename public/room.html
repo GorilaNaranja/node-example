@@ -68,6 +68,10 @@
     <script>
       $(function() {
         const url = `https://${window.location.hostname}:8000`;
+        console.log("url: ", url);
+        console.log("url: ", window.location.hostname);
+        console.log("url: ", window.location);
+
         const socket = io(url);
 
         const room = window.location.pathname.split("/room/")[1];

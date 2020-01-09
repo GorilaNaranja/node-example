@@ -56,8 +56,8 @@ app.listen(process.env.PORT, () => {
 module.exports = { io };
 require("./sockets/socket");
 
-http.listen(80, function() {
-  console.log(`Socket listening on port ${80}`);
+http.listen(8000, function() {
+  console.log(`Socket listening on port ${8000}`);
 });
 
 app.use((err, req, res, next) => {

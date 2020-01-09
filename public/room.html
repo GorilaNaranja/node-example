@@ -72,7 +72,7 @@
         console.log(url);
         console.log(window.location);
 
-        const socket = io(url);
+        const socket = io(url, {secure: true});
 
         const room = window.location.pathname.split("/room/")[1];
         const user = { name: "Felipe", id: "123" };

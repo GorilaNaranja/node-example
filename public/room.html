@@ -69,7 +69,7 @@
       $(function() {
         console.log(window.location.hostname + ":3000");
 
-        const socket = io("https://" + window.location.hostname + ":3000");
+        const socket = io(window.location.hostname + ":3000");
         const room = window.location.pathname.split("/room/")[1];
         const user = { name: "Felipe", id: "123" };
         const element = '<div class="shadow p-3 mb-2 bg-white rounded">';

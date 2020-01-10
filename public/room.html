@@ -67,7 +67,7 @@
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
     <script>
       $(function() {
-        const host = window.location.hostname + ":3000";
+        const host = window.location.hostname;
         console.log(host);
         const socket = io(host);
         const room = window.location.pathname.split("/room/")[1];

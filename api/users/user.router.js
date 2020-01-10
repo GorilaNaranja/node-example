@@ -5,6 +5,8 @@ const validator = require("./user.validator");
 const userController = require("./user.controller");
 const app = express();
 
+app.get("/", userController.loginClient);
+
 app.post("/login", validator.loginUser, userController.login);
 
 app.get(

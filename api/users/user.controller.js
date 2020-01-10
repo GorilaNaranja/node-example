@@ -2,10 +2,19 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const boom = require("@hapi/boom");
 const _ = require("underscore");
+const path = require("path");
 const userService = require("./user.service");
 const nodemailer = require("nodemailer");
 const queryOptions = require("../../utils/queryOptions");
 const userFilters = require("./user.filters");
+
+const loginClient = async (req, res, next) => {
+  try {
+    res.sendFile(path.resolve("public/login.html"));
+  } catch (error) {
+    return next(boom.badData(error.message));
+  }
+};
 
 const login = async (req, res, next) => {
   try {
@@ -118,6 +127,7 @@ const sendEmailToUser = async (req, res, next) => {
 };
 
 module.exports = {
+  loginClient,
   login,
   createUser,
   getUsers,

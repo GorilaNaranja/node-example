@@ -68,10 +68,21 @@
     <script>
       $(function() {
         const host = window.location.hostname;
+        const user = JSON.parse(window.localStorage.getItem("user"));
         console.log(host);
-        const socket = io(host);
+
+        const options = {
+          transportOptions: {
+            polling: {
+              extraHeaders: {
+                Authorization: `${user.token}`
+              }
+            }
+          }
+        };
+
+        const socket = io(host, options);
         const room = window.location.pathname.split("/room/")[1];
-        const user = { name: "Felipe", id: "123" };
         const element = '<div class="shadow p-3 mb-2 bg-white rounded">';
 
         socket.emit("joinRoom", room, user);

@@ -6,6 +6,23 @@ const messages = [];
 
 const messageService = require("../api/messages/message.service");
 
+const jwt = require("jsonwebtoken");
+
+const socketAuthentications = async token => {
+  await jwt.verify(token, process.env.TOKEN_SEED, (err, decoded) => {
+    if (err) return false;
+    return true;
+  });
+};
+
+io.use((socket, next) => {
+  const header = socket.handshake.headers["authorization"];
+  if (socketAuthentications(header)) {
+    return next();
+  }
+  return next(new Error("authentication error"));
+});
+
 io.on("connect", socket => {
   // JOIN ROOM
   socket.on("joinRoom", async (room, user) => {

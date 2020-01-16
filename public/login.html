@@ -99,7 +99,12 @@
           .post("/login", { email, password })
           .then(function(res) {
             const token = res.data.token;
-            window.localStorage.setItem("user", email);
+            const user = {
+              name: res.data.user.name,
+              token,
+              id: res.data.user._id
+            };
+            window.localStorage.setItem("user", JSON.stringify(user));
             if (res.status == 200 && token) {
               window.location.href = `/room/${room}`;
             }

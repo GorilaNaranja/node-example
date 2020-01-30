@@ -6,10 +6,14 @@ const routes = require("./api/routes");
 const { handleErrors } = require("./middlewares/handleErrors");
 const helmet = require("helmet");
 
+const cors = require("cors");
 const express = require("express");
 const app = express();
 const http = require("http").createServer(app);
 const io = require("socket.io").listen(http);
+
+app.use(cors());
+app.options('*', cors()); // add this before your routes
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());

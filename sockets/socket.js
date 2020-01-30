@@ -3,6 +3,7 @@ const { Users } = require("./classes/users");
 const { createMessage } = require("./utils");
 const users = new Users();
 const messages = [];
+const fraseService = require("../api/ditufrase/ditufrase.service");
 
 const messageService = require("../api/messages/message.service");
 
@@ -51,5 +52,16 @@ io.on("connect", socket => {
     messages.push(message);
     socket.emit("createMsg", message);
     socket.in(user.room).emit("createMsg", message);
+
+    if (msg.toLowerCase().includes("di tu frase")) {
+      const username = msg.split("di tu frase ")[1].toLowerCase();
+      const bot = { name: username };
+      const data = await fraseService.getFrase(username);
+      const messageFormat = createMessage(bot, data.frase, room);
+      const message = await messageService.createMessage(messageFormat);
+      messages.push(message);
+      socket.emit("createMsg", message);
+      socket.in(room).emit("createMsg", message);
+    }
   });
 });

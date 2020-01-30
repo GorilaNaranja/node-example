@@ -14,12 +14,7 @@ app.get(
   [tokenVerification, adminVerification],
   userController.getUsers
 );
-app.post(
-  "/user",
-  validator.createUser,
-  [tokenVerification, adminVerification],
-  userController.createUser
-);
+app.post("/user", validator.createUser, userController.createUser);
 app.get(
   "/user/:id",
   [tokenVerification, adminVerification],

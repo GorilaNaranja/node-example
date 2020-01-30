@@ -1,4 +1,5 @@
 function createMessage(user, message, room) {
+  console.log("UTIL", user);
   return {
     user: user.name,
     message,

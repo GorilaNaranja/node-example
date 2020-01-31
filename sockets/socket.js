@@ -46,17 +46,16 @@ io.on("connect", socket => {
 
   socket.on("createMsg", async (msg, room) => {
     const user = users.getUserById(socket.id);
-    await generateMessage(user, msg, user.room);
+    generateMessage(user, msg, user.room);
 
     if (msg.toLowerCase().includes("di tu frase")) {
       const bot = { name: msg.split("di tu frase ")[1].toLowerCase() };
       const data = await fraseService.getFrase(bot.name);
-      await generateMessage(bot, data.frase, room);
+      generateMessage(bot, data.frase, room);
     }
     if (msg.toLowerCase().includes("kaney")) {
       const message = await kaneyService.saySomethingKaney();
-      await generateMessage({ name: "Kaney" }, message, room);
-
+      generateMessage({ name: "Kaney" }, message, room);
       socket.emit("activateKaney", message);
     }
   });

@@ -13,7 +13,7 @@ const http = require("http").createServer(app);
 const io = require("socket.io").listen(http);
 
 app.use(cors());
-app.options('*', cors()); // add this before your routes
+app.options("*", cors()); // add this before your routes
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -59,10 +59,6 @@ http.listen(process.env.PORT, () => {
 // SOCKETS.IO
 module.exports = { io };
 require("./sockets/socket");
-
-// http.listen(8000, function() {
-//   console.log(`Socket listening on port ${8000}`);
-// });
 
 app.use((err, req, res, next) => {
   handleErrors(err, req, res, next);

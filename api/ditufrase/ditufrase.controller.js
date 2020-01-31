@@ -11,24 +11,6 @@ const createFrase = async (req, res, next) => {
   }
 };
 
-const getFrase = async (req, res, next) => {
-  try {
-    if (req.query.username) {
-      const username = req.query.username.toLowerCase();
-      const data = await ditufraseService.getFrase(username);
-      if (!data || !data.frase) {
-        res.json(`Todavía no tienes tu frase`);
-      }
-      res.json(`Di tu frase ${username}: ${data.frase}`);
-    } else {
-      res.json(`Define un username en la query`);
-    }
-  } catch (error) {
-    return next(boom.badData(error.message));
-  }
-};
-
 module.exports = {
-  getFrase,
   createFrase
 };

@@ -11,6 +11,7 @@ const createFrase = async data => {
 
 const getFrase = async name => {
   const frase = await Frase.findOne({ username: name });
+  if (!frase) return { frase: `Todavía no tengo frase` };
   return frase;
 };
 

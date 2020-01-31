@@ -4,10 +4,9 @@ const { createMessage } = require("./utils");
 const users = new Users();
 const messages = [];
 const fraseService = require("../api/ditufrase/ditufrase.service");
-
 const messageService = require("../api/messages/message.service");
-
 const jwt = require("jsonwebtoken");
+const kaneyService = require("../utils/kaney");
 
 const socketAuthentications = async token => {
   await jwt.verify(token, process.env.TOKEN_SEED, (err, decoded) => {
@@ -47,21 +46,26 @@ io.on("connect", socket => {
 
   socket.on("createMsg", async (msg, room) => {
     const user = users.getUserById(socket.id);
+    await generateMessage(user, msg, user.room);
+
+    if (msg.toLowerCase().includes("di tu frase")) {
+      const bot = { name: msg.split("di tu frase ")[1].toLowerCase() };
+      const data = await fraseService.getFrase(bot.name);
+      await generateMessage(bot, data.frase, room);
+    }
+    if (msg.toLowerCase().includes("kaney")) {
+      const message = await kaneyService.saySomethingKaney();
+      await generateMessage({ name: "Kaney" }, message, room);
+
+      socket.emit("activateKaney", message);
+    }
+  });
+
+  const generateMessage = async (user, msg, room) => {
     const messageFormat = createMessage(user, msg, room);
     const message = await messageService.createMessage(messageFormat);
     messages.push(message);
     socket.emit("createMsg", message);
-    socket.in(user.room).emit("createMsg", message);
-
-    if (msg.toLowerCase().includes("di tu frase")) {
-      const username = msg.split("di tu frase ")[1].toLowerCase();
-      const bot = { name: username };
-      const data = await fraseService.getFrase(username);
-      const messageFormat = createMessage(bot, data.frase, room);
-      const message = await messageService.createMessage(messageFormat);
-      messages.push(message);
-      socket.emit("createMsg", message);
-      socket.in(room).emit("createMsg", message);
-    }
-  });
+    socket.in(room).emit("createMsg", message);
+  };
 });

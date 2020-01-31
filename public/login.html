@@ -77,11 +77,9 @@
               />
             </div>
             <div class="form-group">
-              <input
-                onclick="login()"
-                value="Sign In"
-                class="btn float-right btn-dark"
-              />
+              <button onclick="login()" class="btn btn-dark">
+                Sign In
+              </button>
             </div>
           </div>
         </div>
@@ -97,6 +95,8 @@
 
       if (!room) {
         alert("Room required");
+      } else if (!email) {
+        alert("Name required");
       } else {
         //axios
         //.post("/login", { email, password })

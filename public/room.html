@@ -91,17 +91,17 @@
       }
 
       $(function() {
-        const host = window.location.hostname;
+        const host = window.location.hostname + ":8080";
         const user = JSON.parse(window.localStorage.getItem("user"));
         console.log(host);
 
         const options = {
           transportOptions: {
-            //polling: {
-            //  extraHeaders: {
-            //    Authorization: `${user.token}`
-            //  }
-            //}
+            polling: {
+             extraHeaders: {
+               Authorization: `${user.token}`
+             }
+            }
           }
         };
 

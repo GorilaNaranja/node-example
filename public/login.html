@@ -49,7 +49,6 @@
                 placeholder="name"
               />
             </div>
-            <!-- 
             <div class="input-group form-group">
               <div class="input-group-prepend">
                 <span class="input-group-text"><i class="fas fa-key"></i></span>
@@ -62,7 +61,6 @@
                             placeholder="password"
                             />
                           </div>
-                        -->
             <div class="input-group form-group">
               <div class="input-group-prepend">
                 <span class="input-group-text"
@@ -90,7 +88,7 @@
   <script>
     function login() {
       var email = document.getElementById("email").value;
-      //var password = document.getElementById("password").value;
+      var password = document.getElementById("password").value;
       var room = document.getElementById("room").value;
 
       if (!room) {
@@ -98,24 +96,24 @@
       } else if (!email) {
         alert("Name required");
       } else {
-        //axios
-        //.post("/login", { email, password })
-        // .then(function(res) {
-        //const token = res.data.token;
-        //const user = {
-        //  name: res.data.user.name,
-        //token,
-        //id: res.data.user._id
-        //};
-        const user = { name: email };
+        axios
+        .post("/login", { email, password })
+        .then(function(res) {
+        const token = res.data.token;
+        const user = {
+         name: res.data.user.name,
+        token,
+        id: res.data.user._id
+        };
+        // const user = { name: email };
         window.localStorage.setItem("user", JSON.stringify(user));
-        //if (res.status == 200 && token) {
+        if (res.status == 200 && token) {
         window.location.href = `/room/${room}`;
-        //}
-        //   })
-        //    .catch(function(err) {
-        //      alert("Login error");
-        //    });
+        }
+          })
+           .catch(function(err) {
+             alert("Login error");
+           });
       }
     }
   </script>

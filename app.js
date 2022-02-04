@@ -23,7 +23,7 @@ app.set("view engine", "ejs");
 
 const password = process.env.MONGO_PASS;
 const dbName = "test";
-const uri = `mongodb+srv://Felipe:${password}@node-example-cluster-vzg5i.mongodb.net/${dbName}?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://admin:${password}@cluster0.swnd8.mongodb.net/${dbName}?retryWrites=true&w=majority`;
 const options = {
   useNewUrlParser: true,
   useUnifiedTopology: true,

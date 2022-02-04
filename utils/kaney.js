@@ -1,7 +1,7 @@
-const request = require("async-request");
+const axios = require('axios');
 
 async function saySomethingKaney() {
-  let respuesta = await request("https://api.kanye.rest/?format=text");
+  let respuesta = await axios.get("https://api.kanye.rest/?format=text")
   return respuesta.body;
 }
 

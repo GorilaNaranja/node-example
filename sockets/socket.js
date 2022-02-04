@@ -49,7 +49,7 @@ io.on("connect", socket => {
     generateMessage(user, msg, user.room);
 
     if (msg.toLowerCase().includes("di tu frase")) {
-      const bot = { name: msg.split("di tu frase ")[1].toLowerCase() };
+      const bot = { name: "bot" };
       const data = await fraseService.getFrase(bot.name);
       generateMessage(bot, data.frase, room);
     }
